@@ -12,7 +12,6 @@ function AllPosts() {
             }
         }
     );
-    setLoading((loading)=>!loading);
     }, []);
 
 
