@@ -21,15 +21,15 @@ function PostForm({ post }) {
     const submit = async (data) => {
 
         if (post) {
-            const file = data.image[0] ? service.uploadFile(data.image[0]) : null;
+            const file = data.image[0] ? await service.uploadFile(data.image[0]) : null;
 
             if (file) {
-                service.deleteFile(post.featuredImage);
+                await service.deleteFile(post.featuredImage);
             }
             
             const dbPost = await service.updatePost(post.$id, {
                 ...data,
-                featuredImage: file ? file.$id : undefined
+                featuredImage: file ? file.$id : undefined,
             })
 
             if (dbPost) {
@@ -39,10 +39,6 @@ function PostForm({ post }) {
         else {
             const file = await service.uploadFile(data.image[0]);
 
-            console.log("45",   userData);
-            console.log("46", data);
-            
-            
             if (file) {
                 const slug = data.slug;
                 const fileId = file.$id;
