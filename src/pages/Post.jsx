@@ -3,15 +3,17 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import service from "../appwrite/config";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCurrentPost} from "../store/postSlice";
 
 export default function Post() {
     
     const [post, setPost] = useState(null);
     const { slug } = useParams();
     const navigate = useNavigate();
+    const userData = useSelector((state) => state.auth.userData);    
+    const dispatch = useDispatch();  
 
-    const userData = useSelector((state) => state.auth.userData);
 
     const isAuthor = post && userData ? post.userId === userData.$id : false;
 
@@ -25,18 +27,18 @@ export default function Post() {
     }, [slug, navigate]);
 
     const deletePost = () => {
+
         service.deletePost(post.$id).then((status) => {
             if (status) {
                 service.deleteFile(post.featuredImage);
+                dispatch(deleteCurrentPost(post));
                 navigate("/");
             }
         });
+
+
     };
 
-
-    if(post)
-    console.log("37 Image UrL" , service.getFilePreview(post.featuredImage));
-    
     return post ? (
         <div className="py-8">
             <Container>

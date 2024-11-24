@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import TextArea from '../TextArea'
 import parse from "html-react-parser";
+import { useDispatch } from 'react-redux'
+import { addPost, updatePost } from '../../store/postSlice'
 
 function PostForm({ post }) {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
@@ -20,10 +22,9 @@ function PostForm({ post }) {
     
     const navigate = useNavigate()
     const userData = useSelector(state => state.auth.userData);
+    const dispatch = useDispatch();
 
     const submit = async (data) => {
-console.log(23);
-
         if (post) {
             const file = data.image[0] ? await service.uploadFile(data.image[0]) : null;
 
@@ -40,6 +41,7 @@ console.log(23);
             })
 
             if (dbPost) {
+                dispatch(updatePost(dbPost));
                 navigate(`/post/${dbPost.$id}`)
             }
         }
@@ -58,6 +60,7 @@ console.log(23);
                 })
 
                 if (dbPost) {
+                    dispatch(addPost(dbPost));
                     navigate(`/post/${dbPost.$id}`)
                 }
             }

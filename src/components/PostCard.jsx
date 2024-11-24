@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom'
 function PostCard({
   $id,
   title,
-  featuredImage
+  featuredImage,
+  content = ''
 }) {
 
 
@@ -24,7 +25,7 @@ function PostCard({
 
 
   return (
-      <div className="w-full max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-6">
+      <div className="p-4 max-w-xl mx-auto bg-white shadow-md rounded-lg">
         <div className="bg-gray-800 p-4">
           <h2 className="text-white text-lg font-bold">r/ExampleSubreddit</h2>
           <p className="text-gray-400 text-sm">Posted by u/username</p>
@@ -35,7 +36,7 @@ function PostCard({
           </div>
           <img className="w-full h-72 object-contain" src={service.getFilePreview(featuredImage)} alt="Post image" />
           <div className="p-4">
-            <p className="text-gray-700 text-base">This is a description of the post. It provides more details and context about the content of the post.</p>
+            <p className="text-gray-700 text-base">{content}</p>
           </div>
         </Link>
         <div className="bg-gray-100 p-4 flex justify-between items-center">

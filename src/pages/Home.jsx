@@ -1,16 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import service from '../appwrite/config'
 import { Container, PostCard } from '../components'
+import { useDispatch } from 'react-redux';
+import { addAllPosts } from '../store/postSlice';
+import { useSelector } from 'react-redux';
 
 function Home() {
     const [posts, setPosts] = useState([]);
+    const dispatch = useDispatch();
+    const allPosts = useSelector(state => state.posts.posts);
+    
     useEffect(() => {
+        if(allPosts.length <= 0){
         service.getPosts([]).then((posts) => {
             if (posts) {
-                setPosts(posts.documents)
+                setPosts(posts.documents);
+                dispatch(addAllPosts(posts.documents));
             }
         })
-    }, [])
+        }
+        else{
+            setPosts(allPosts);
+        }
+    }
+    , [])
+
+
 
 
     if (posts.length === 0) {
