@@ -133,7 +133,7 @@ export class Service{
         }
     }
 
-     getFilePreview(fileId){
+   getFilePreview(fileId){
         try {
             return this.bucket.getFilePreview(
                 conf.appwritebucketID,

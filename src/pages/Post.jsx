@@ -6,14 +6,11 @@ import parse from "html-react-parser";
 import { useSelector } from "react-redux";
 
 export default function Post() {
-    console.log("Line no 9");
     
     const [post, setPost] = useState(null);
     const { slug } = useParams();
     const navigate = useNavigate();
 
-    console.log("15" , slug);
-    
     const userData = useSelector((state) => state.auth.userData);
 
     const isAuthor = post && userData ? post.userId === userData.$id : false;
@@ -36,9 +33,16 @@ export default function Post() {
         });
     };
 
+
+    if(post)
+    console.log("37 Image UrL" , service.getFilePreview(post.featuredImage));
+    
     return post ? (
         <div className="py-8">
             <Container>
+            <div className="w-full mb-6">
+                    <h1 className="text-2xl font-bold">{post.title}</h1>
+                </div>
                 <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
                     <img
                         src= {service.getFilePreview(post.featuredImage)} 
@@ -58,9 +62,7 @@ export default function Post() {
                             </Button>
                         </div>
                     )}
-                </div>
-                <div className="w-full mb-6">
-                    <h1 className="text-2xl font-bold">{post.title}</h1>
+                    
                 </div>
                 <div className="browser-css">
                     {parse(post.content)}

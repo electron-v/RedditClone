@@ -4,6 +4,8 @@ import { Button, Input, Select, RTE } from "./../index"
 import service from '../../appwrite/config'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import TextArea from '../TextArea'
+import parse from "html-react-parser";
 
 function PostForm({ post }) {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
@@ -15,10 +17,12 @@ function PostForm({ post }) {
         },
     });
 
+    
     const navigate = useNavigate()
     const userData = useSelector(state => state.auth.userData);
 
     const submit = async (data) => {
+console.log(23);
 
         if (post) {
             const file = data.image[0] ? await service.uploadFile(data.image[0]) : null;
@@ -27,6 +31,9 @@ function PostForm({ post }) {
                 await service.deleteFile(post.featuredImage);
             }
             
+            console.log(34,data);
+            
+
             const dbPost = await service.updatePost(post.$id, {
                 ...data,
                 featuredImage: file ? file.$id : undefined,
@@ -104,7 +111,15 @@ function PostForm({ post }) {
                         setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
                     }}
                 />
-                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+                {/* <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+             */}
+                <TextArea
+                label="Description:"
+                placeholder="Description"
+                className="mb-4"
+                {...register("content", { required: true })}
+                />
+
             </div>
             <div className="w-1/3 px-2">
                 <Input
@@ -134,6 +149,7 @@ function PostForm({ post }) {
                 </Button>
             </div>
         </form>
+        
 
     )
 }
